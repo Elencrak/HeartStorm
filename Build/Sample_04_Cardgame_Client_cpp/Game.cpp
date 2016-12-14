@@ -21,6 +21,7 @@ namespace JojoBen {
 			
 			shared_ptr<Player> currentPlayer;
 			currentPlayer = make_shared<Player>();
+			currentPlayer->Initialize(currentPlayerBoard);
 
 			PlayersBoard.push_back(currentPlayerBoard);
 			Players.push_back(currentPlayer);

@@ -18,6 +18,8 @@ namespace JojoBen {
 
 		void Initialize();		
 
+		void Round();
+
 	private:
 		int NumberPlayer;
 		vector<shared_ptr<Board>> PlayersBoard;
