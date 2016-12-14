@@ -87,6 +87,12 @@
     <ClInclude Include="Player.h">
       <Filter>HeartStorm</Filter>
     </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>HeartStorm</Filter>
+    </ClInclude>
+    <ClInclude Include="Deck.h">
+      <Filter>HeartStorm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Logger.cpp">
@@ -138,6 +144,12 @@
       <Filter>HeartStorm</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <Filter>HeartStorm</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>HeartStorm</Filter>
+    </ClCompile>
+    <ClCompile Include="Deck.cpp">
       <Filter>HeartStorm</Filter>
     </ClCompile>
   </ItemGroup>
