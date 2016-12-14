@@ -16,6 +16,22 @@ namespace JojoBen
 	}
 
 
+	Card * Card::MakeCard()
+	{
+		int valuePoints = 10;
+		return nullptr;
+	}
+
+	Card * Card::MakeCard(int attack, int defence)
+	{
+		return nullptr;
+	}
+
+	Card * Card::MakeCard(int valuePoints)
+	{
+		return nullptr;
+	}
+
 	Card::~Card()
 	{
 

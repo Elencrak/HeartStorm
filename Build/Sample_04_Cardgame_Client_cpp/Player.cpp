@@ -10,7 +10,8 @@ namespace JojoBen
 
 	void Player::Draw()
 	{
-		playerHand->add(playerDeck->Draw());
+		if(!playerDeck->isEmpty())
+			playerHand->AddCard(playerDeck->Draw());
 	}
 
 	void Player::PlayCard(Card * card)
