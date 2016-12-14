@@ -7,6 +7,7 @@
 #include "Online/MatchmakingPlugin.h"
 #include "Online/TurnByTurnPlugin.h"
 #include "Online/GameSession.h"
+#include "Game.h"
 
 int ApplyTransaction(Stormancer::UpdateDto t, int& gameState)
 {
