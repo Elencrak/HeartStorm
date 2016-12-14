@@ -3,7 +3,7 @@
 
 namespace JojoBen {
 	Game::Game()
-	{
+	{		
 	}
 
 
