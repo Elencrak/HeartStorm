@@ -76,7 +76,7 @@
       <Filter>Online</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
+      <Filter>HeartStorm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +120,7 @@
       <Filter>Online</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>HeartStorm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
