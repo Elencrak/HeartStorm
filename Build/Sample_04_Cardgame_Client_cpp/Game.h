@@ -5,6 +5,7 @@
 
 #include "Deck.h"
 #include "Board.h"
+#include "Player.h"
 
 using namespace std;
 
@@ -12,13 +13,15 @@ namespace JojoBen {
 	class Game
 	{
 	public:
-		Game();
+		Game(int numberPlayer);
 		~Game();
 
+		void Initialize();		
+
 	private:
-		vector<Deck> PlayersDeck;
-		vector<Board> BoardsPlayer;
-		
+		int NumberPlayer;
+		vector<shared_ptr<Board>> PlayersBoard;
+		vector<shared_ptr<Player>> Players;
 	};
 }
 
