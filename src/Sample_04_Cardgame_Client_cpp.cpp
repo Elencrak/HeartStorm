@@ -12,11 +12,19 @@ int ApplyTransaction(Stormancer::UpdateDto t, int& gameState)
 {
 	if (t.cmd == "start")
 	{
-		gameState = t.json_args()[L"seed"].as_integer();
+		gameState = t.json_args()[L"seed"].as_integer();	
 	}
 	else if (t.cmd == "add")
 	{
 		gameState += t.json_args()[L"value"].as_integer();
+	}
+	else if (t.cmd == "PlayCard")
+	{
+
+	}
+	else if (t.cmd == "EndTrun")
+	{
+
 	}
 	return gameState;
 }
@@ -83,7 +91,8 @@ int main(int argc, char *argv[])
 	std::cout << "FOUND" << std::endl;
 
 	Stormancer::ScenePtr game_scene = auth->getPrivateScene(mmResponse.gameId).get();
-	int gameState = 0;
+	//int gameState = 0;
+	
 	auto transactionBroker = game_scene.lock()->dependencyResolver()->resolve<Stormancer::TurnByTurnService>();
 	bool running = true;
 	transactionBroker->onDesyncErrorCallback([&running](std::string error)

@@ -1,7 +1,7 @@
 #pragma once
-#include "Card.h";
-
 using namespace std;
+
+class Card;
 
 namespace JojoBen
 {
@@ -15,7 +15,10 @@ namespace JojoBen
 		
 		void Initialize();
 		void PlayCard(Card* cardToPlay);
+		
+		void ChooseAttackers();
 
+		void ChooseDefend();
 		//Getter
 		vector<Card*> GetPlayedCard();
 	private:
