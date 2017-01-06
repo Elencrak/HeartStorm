@@ -18,9 +18,6 @@ namespace JojoBen {
 
 		void Initialize(int seed);		
 
-		void PlayCard(int CardToPlay, int TargetPlayer);
-		void EndTurn();
-
 	private:
 		int NumberPlayer;
 		int SeedForGame;

@@ -19,13 +19,13 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 	}
 	else if (t.cmd == "PlayCard")
 	{
-		currentGame->PlayCard(t.json_args()[L"CardID"].as_integer(), t.json_args()[L"TargetPlayer"].as_integer());
+		//currentGame->PlayCard(t.json_args()[L"CardID"].as_integer(), t.json_args()[L"TargetPlayer"].as_integer());
 	}
 	else if (t.cmd == "EndTurn")
 	{
-		currentGame->EndTurn();
+		//currentGame->EndTurn();
 	}
-	return currentGame->hash();
+	return 0;//currentGame->hash();
 }
 
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 	
 	//Create game
 	// il faut que je set tous le player id;
-	shared_ptr<Game> currentGame = make_shared<Game>();
+	shared_ptr<Game> currentGame = make_shared<Game>(2);
 
 	auto transactionBroker = game_scene.lock()->dependencyResolver()->resolve<Stormancer::TurnByTurnService>();
 	bool running = true;
@@ -138,9 +138,14 @@ int main(int argc, char *argv[])
 	gameSession->waitServerReady().get();//
 	std::cout << "CONNECTED" << std::endl;
 
+
+	// Initialization
+	int seed = 123456789;
+	currentGame->Initialize(seed);
 	int n;
 	while (running)
 	{
+
 		// Il faut que je récupère les input des deux joueurs.
 		// De base je prend le premier je joue la carte 
 		// Je prend ensuite le second 

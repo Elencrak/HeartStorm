@@ -75,12 +75,6 @@
     <ClInclude Include="..\..\src\Online\TurnByTurnPlugin.h">
       <Filter>Online</Filter>
     </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Deck.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Board.h">
       <Filter>HeartStorm</Filter>
     </ClInclude>
@@ -145,12 +139,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Online\TurnByTurnPlugin.cpp">
       <Filter>Online</Filter>
-    </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Deck.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Board.cpp">
       <Filter>HeartStorm</Filter>

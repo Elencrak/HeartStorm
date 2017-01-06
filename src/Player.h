@@ -12,7 +12,7 @@ namespace JojoBen
 	{
 	public:
 
-		void Initialize(std::shared_ptr<Board> board);
+		void Initialize(std::shared_ptr<Board> board, int seed);
 
 		void Draw();
 

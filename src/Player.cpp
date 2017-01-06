@@ -3,8 +3,9 @@
 
 namespace JojoBen
 {
-	void Player::Initialize(std::shared_ptr<Board> board)
+	void Player::Initialize(std::shared_ptr<Board> board, int seed)
 	{
+		srand(seed);
 		playerBoard = board;
 	}
 
@@ -17,6 +18,7 @@ namespace JojoBen
 	void Player::PlayCard(Card * card)
 	{
 		playerBoard->PlayCard(card);
+		playerHand->RemoveCard(card);
 	}
 
 	Player::Player()

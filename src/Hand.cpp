@@ -7,6 +7,18 @@ namespace JojoBen
 		cards.push_back(card);
 	}
 
+	void Hand::RemoveCard(Card * card)
+	{
+		for (auto it = cards.begin(); it != cards.end(); it++)
+		{
+			if ((*it) == card)
+			{
+				cards.erase(it);
+				return;
+			}
+		}
+	}
+
 	Hand::Hand()
 	{
 		cards = std::vector<Card*>();

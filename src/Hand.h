@@ -9,6 +9,7 @@ namespace JojoBen
 	{
 	public:
 		void AddCard(Card* card);
+		void RemoveCard(Card* card);
 		Hand();
 		~Hand();
 	private:
