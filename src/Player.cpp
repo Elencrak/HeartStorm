@@ -16,7 +16,7 @@ namespace JojoBen
 
 	void Player::PlayCard(Card * card)
 	{
-
+		playerBoard->PlayCard(card);
 	}
 
 	int Player::GetHash()
@@ -27,12 +27,14 @@ namespace JojoBen
 
 	Player::Player()
 	{
-
+		playerDeck = new Deck(20);
+		playerHand = new Hand();
 	}
 
 
 	Player::~Player()
 	{
-
+		delete playerDeck;
+		delete playerHand;
 	}
 }
