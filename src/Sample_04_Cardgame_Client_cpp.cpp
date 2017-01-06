@@ -9,25 +9,23 @@
 #include "Online/GameSession.h"
 #include "Game.h"
 
-int ApplyTransaction(Stormancer::UpdateDto t, int& gameState)
+using namespace JojoBen;
+
+int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 {
 	if (t.cmd == "start")
-	{
-		gameState = t.json_args()[L"seed"].as_integer();	
-	}
-	else if (t.cmd == "add")
-	{
-		gameState += t.json_args()[L"value"].as_integer();
+	{		
+		currentGame->Initialize(t.json_args()[L"seed"].as_integer());	
 	}
 	else if (t.cmd == "PlayCard")
 	{
-
+		currentGame->PlayCard(t.json_args()[L"CardID"].as_integer(), t.json_args()[L"TargetPlayer"].as_integer());
 	}
-	else if (t.cmd == "EndTrun")
+	else if (t.cmd == "EndTurn")
 	{
-
+		currentGame->EndTurn();
 	}
-	return gameState;
+	return currentGame->hash();
 }
 
 
@@ -92,8 +90,11 @@ int main(int argc, char *argv[])
 	std::cout << "FOUND" << std::endl;
 
 	Stormancer::ScenePtr game_scene = auth->getPrivateScene(mmResponse.gameId).get();
-	//int gameState = 0;
 	
+	//Create game
+	// il faut que je set tous le player id;
+	shared_ptr<Game> currentGame = make_shared<Game>();
+
 	auto transactionBroker = game_scene.lock()->dependencyResolver()->resolve<Stormancer::TurnByTurnService>();
 	bool running = true;
 	transactionBroker->onDesyncErrorCallback([&running](std::string error)
@@ -101,19 +102,19 @@ int main(int argc, char *argv[])
 		std::cout << "A desynchronization error occured. Details : " << error << std::endl;
 		running = false;
 	});
-	transactionBroker->onUpdateGameCallback([&gameState](Stormancer::UpdateDto update)
+	transactionBroker->onUpdateGameCallback([&currentGame](Stormancer::UpdateDto update)
 	{
 
-		auto newHash = ApplyTransaction(update, gameState);
-		std::cout << "game state updated : " << gameState << std::endl;
+		auto newHash = ApplyTransaction(update, currentGame);
+		std::cout << "game state updated : " << currentGame << std::endl;
 		return newHash; //Returns the new hash to the server for validation
 	});
-	transactionBroker->onReplayTLog([&gameState,&running](std::vector<Stormancer::TransactionLogItem> transactions)
+	transactionBroker->onReplayTLog([&currentGame,&running](std::vector<Stormancer::TransactionLogItem> transactions)
 	{
 		std::cout << "Replay existing transaction log...";
 		for (auto t : transactions)
 		{
-			auto newHash = ApplyTransaction(t.transactionCommand, gameState);
+			auto newHash = ApplyTransaction(t.transactionCommand, currentGame);
 			if (t.hashAvailable && t.resultHash != newHash)
 			{
 				std::cout << "Desynchronization while playing Transaction log. Expected "<<t.resultHash << " obtained "<< newHash << std::endl;
@@ -140,13 +141,21 @@ int main(int argc, char *argv[])
 	int n;
 	while (running)
 	{
+		// Il faut que je récupère les input des deux joueurs.
+		// De base je prend le premier je joue la carte 
+		// Je prend ensuite le second 
+		// je joue la carte 
+		// je finis le tour.
+		// Optionnel rajouter les board des deux joueurs
+
 		std::cout << "Enter number to add to game state." << std::endl;
 		std::cin >> n;
 		auto json = web::json::value();
-		json[L"value"] = n;
+		json[L"CardID"] = n;
+		json[L"TargetPlayer"];
 		try
 		{
-			auto t = transactionBroker->submitTransaction(auth->userId(), "add", json);
+			auto t = transactionBroker->submitTransaction(auth->userId(), "PlayCard", json);
 			t.get();
 		}
 		catch(std::exception& ex)

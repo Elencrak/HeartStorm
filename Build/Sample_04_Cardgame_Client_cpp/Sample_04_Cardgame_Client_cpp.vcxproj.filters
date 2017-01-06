@@ -75,16 +75,28 @@
     <ClInclude Include="..\..\src\Online\TurnByTurnPlugin.h">
       <Filter>Online</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="Board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Deck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Board.h">
       <Filter>HeartStorm</Filter>
     </ClInclude>
-    <ClInclude Include="Card.h">
+    <ClInclude Include="..\..\src\Card.h">
       <Filter>HeartStorm</Filter>
     </ClInclude>
-    <ClInclude Include="Hand.h">
+    <ClInclude Include="..\..\src\Deck.h">
       <Filter>HeartStorm</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="..\..\src\Game.h">
+      <Filter>HeartStorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Hand.h">
+      <Filter>HeartStorm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Player.h">
       <Filter>HeartStorm</Filter>
     </ClInclude>
   </ItemGroup>
@@ -128,16 +140,28 @@
     <ClCompile Include="..\..\src\Online\TurnByTurnPlugin.cpp">
       <Filter>Online</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Deck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Board.cpp">
       <Filter>HeartStorm</Filter>
     </ClCompile>
-    <ClCompile Include="Card.cpp">
+    <ClCompile Include="..\..\src\Card.cpp">
       <Filter>HeartStorm</Filter>
     </ClCompile>
-    <ClCompile Include="Hand.cpp">
+    <ClCompile Include="..\..\src\Deck.cpp">
       <Filter>HeartStorm</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="..\..\src\Game.cpp">
+      <Filter>HeartStorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Hand.cpp">
+      <Filter>HeartStorm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Player.cpp">
       <Filter>HeartStorm</Filter>
     </ClCompile>
   </ItemGroup>

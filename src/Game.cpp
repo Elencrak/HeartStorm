@@ -12,8 +12,9 @@ namespace JojoBen {
 	{
 	}
 
-	void Game::Initialize()
+	void Game::Initialize(int Seed)
 	{
+		SeedForGame = Seed;
 		for (int i = 0; i < NumberPlayer; i++)
 		{
 			shared_ptr<Board> currentPlayerBoard;
