@@ -21,6 +21,10 @@ namespace JojoBen {
 		void PlayCard(int CardToPlay, int TargetPlayer);
 		void EndTurn();
 
+		int GetGameHash();
+		int GetBoardsHash();
+		int GetPlayerHash();
+
 	private:
 		int NumberPlayer;
 		int SeedForGame;

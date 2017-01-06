@@ -25,7 +25,9 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 	{
 		currentGame->EndTurn();
 	}
-	return currentGame->hash();
+
+	// A la fin il faut générer le hash pour le status du jeu
+	return currentGame->GetGameHash();
 }
 
 
@@ -67,10 +69,6 @@ int main(int argc, char *argv[])
 		});
 	});
 	std::cout << "DONE" << std::endl;
-
-	////Connect to the matchmaking scene
-	//auto matchmakingScene = auth->getPrivateScene("matchmaking-fast").get();
-	//matchmakingScene.lock()->connect().get();
 
 	auto matchmaking = matchmakingScene.get().lock()->dependencyResolver()->resolve<Stormancer::MatchmakingService>();
 

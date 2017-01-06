@@ -19,6 +19,12 @@ namespace JojoBen
 
 	}
 
+	int Player::GetHash()
+	{
+		int result;
+		//for(int ph :playerHand )
+	}
+
 	Player::Player()
 	{
 
