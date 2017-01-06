@@ -8,6 +8,8 @@
 #include "Online/TurnByTurnPlugin.h"
 #include "Online/GameSession.h"
 #include "Game.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>
 
 using namespace JojoBen;
 
@@ -32,7 +34,9 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 
 int main(int argc, char *argv[])
 {
-	std::string login = "superUtilisateur";
+	srand(time(NULL));
+	int result = rand();
+	std::string login = std::to_string(result);
 	if (argc >= 2)
 	{
 		login = std::string(argv[1]);
@@ -45,41 +49,23 @@ int main(int argc, char *argv[])
 
 	auto client = Stormancer::Client::createClient(config);
 
-	//Authenticate using steam (with stub enabled)
 	auto auth = client->dependencyResolver()->resolve<Stormancer::IAuthenticationService>();
 	std::cout << "Authenticating as '" << login << "'...";
-	auto matchmakingScene = auth->steamLogin(login).then([auth](pplx::task<Stormancer::ScenePtr> t)
-	{
-		try 
-		{
-			auto result = t.get();
-		}
-		catch (std::exception& ex)
-		{
-			std::cout << "Login failed : " << ex.what();
-			throw;
-		}		
-		return auth->getPrivateScene("matchmaking-fast");
-	})
-		.then([](pplx::task<Stormancer::ScenePtr> t) {
-		auto matchmakingScene_ = t.get();
-		return matchmakingScene_.lock()->connect().then([matchmakingScene_](pplx::task<void> t) {
-			return matchmakingScene_;
-		});
-	});
+	auto scene = auth->steamLogin(login).get();
 	std::cout << "DONE" << std::endl;
 
 	//Connect to the matchmaking scene
 	auto matchmakingScene = auth->getPrivateScene("matchmaking-fast").get();
 	matchmakingScene.lock()->connect().get();
-	auto matchmaking = matchmakingScene.get().lock()->dependencyResolver()->resolve<Stormancer::MatchmakingService>();
+
+	auto matchmaking = matchmakingScene.lock()->dependencyResolver()->resolve<Stormancer::MatchmakingService>();
 
 	///Configure a task_completion_event which will fire when a game is found.
 	auto tce = pplx::task_completion_event<Stormancer::MatchmakingResponse>{};
 	matchmaking->onMatchFound([tce](Stormancer::MatchmakingResponse response)
 	{
 
-		tce.set(response);		
+		tce.set(response);
 
 	});
 

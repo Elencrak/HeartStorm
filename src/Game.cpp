@@ -42,9 +42,10 @@ namespace JojoBen {
 		{
 			result = 31 * result + PlayersBoard[i]->GetHash();
 		}
+		return result;
 	}
 
-	int Game::GetPlayerHash()
+	/*int Game::GetPlayerHash()
 	{
 		int result = 0;
 		for (int i = 0; i < Players.size(); i++)
@@ -53,5 +54,5 @@ namespace JojoBen {
 		}
 		//TODO : implements
 		return 0;
-	}
+	}*/
 }
