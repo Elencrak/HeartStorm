@@ -20,4 +20,15 @@ namespace JojoBen
 		}
 		cards.clear();
 	}
+
+	int Hand::GetHash()
+	{
+		int result = 0;
+		for (auto c : cards)
+		{
+			result = 31 * result + c->CardId;
+		}
+		return result;
+	}
+
 }

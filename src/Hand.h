@@ -11,6 +11,9 @@ namespace JojoBen
 		void AddCard(Card* card);
 		Hand();
 		~Hand();
+
+		int GetHash();
+
 	private:
 		std::vector<Card*> cards;
 	};

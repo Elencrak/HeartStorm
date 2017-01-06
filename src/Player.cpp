@@ -22,7 +22,8 @@ namespace JojoBen
 	int Player::GetHash()
 	{
 		int result;
-		//for(int ph :playerHand )
+		//Todo faire le hash pour le player
+
 	}
 
 	Player::Player()
