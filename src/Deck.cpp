@@ -17,11 +17,22 @@ namespace JojoBen
 
 	Deck::Deck()
 	{
-
+		cards = std::vector<Card*>(deckSize);
 	}
 
 
+	Deck::Deck(int size)
+	{
+		deckSize = size;
+		cards = std::vector<Card*>(deckSize);
+	}
+
 	Deck::~Deck()
 	{
+		for (std::vector< Card* >::iterator it = cards.begin(); it != cards.end(); ++it)
+		{
+			delete (*it);
+		}
+		cards.clear();
 	}
 }

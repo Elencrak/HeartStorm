@@ -9,7 +9,7 @@ namespace JojoBen
 
 	Hand::Hand()
 	{
-
+		cards = std::vector<Card*>();
 	}
 
 	Hand::~Hand()
