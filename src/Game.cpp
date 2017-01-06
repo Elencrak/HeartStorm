@@ -28,4 +28,30 @@ namespace JojoBen {
 			Players.push_back(currentPlayer);
 		}
 	}
+
+	int Game::GetGameHash()
+	{
+		//TODO : Implements
+		return 0;
+	}
+	
+	int Game::GetBoardsHash() 
+	{
+		int result = 0;
+		for (int i = 0; i < PlayersBoard.size(); i++)
+		{
+			result = 31 * result + PlayersBoard[i]->GetHash();
+		}
+	}
+
+	int Game::GetPlayerHash()
+	{
+		int result = 0;
+		for (int i = 0; i < Players.size(); i++)
+		{
+			result = 31 * result + Players[i]->GetHash();
+		}
+		//TODO : implements
+		return 0;
+	}
 }

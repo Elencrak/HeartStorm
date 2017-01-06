@@ -5,6 +5,8 @@ namespace JojoBen
 	class Card
 	{
 	public:
+		int CardId;
+
 		static Card* MakeCard();
 		static Card* MakeCard(int attack, int defence);
 		static Card* MakeCard(int valuePoints);

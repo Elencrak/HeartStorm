@@ -21,7 +21,8 @@ namespace JojoBen
 
 		//void ChooseDefend();
 		
-		
+		int GetHash();
+
 		//Getter
 		vector<Card*> GetPlayedCard();
 	private:

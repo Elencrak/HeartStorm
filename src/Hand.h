@@ -12,6 +12,9 @@ namespace JojoBen
 		void RemoveCard(Card* card);
 		Hand();
 		~Hand();
+
+		int GetHash();
+
 	private:
 		std::vector<Card*> cards;
 	};

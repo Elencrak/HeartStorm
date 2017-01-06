@@ -18,6 +18,8 @@ namespace JojoBen
 
 		void PlayCard(Card* card);
 
+		int GetHash();
+
 		Player();
 		~Player();
 

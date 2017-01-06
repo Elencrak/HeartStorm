@@ -8,8 +8,12 @@ namespace JojoBen {
 	public:
 		Card* Draw();
 		bool isEmpty();
+
 		Deck();
 		Deck(int size);
+
+		int GetHash();
+
 		~Deck();
 	private:
 		int deckSize = 20;

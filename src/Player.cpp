@@ -21,6 +21,13 @@ namespace JojoBen
 		playerHand->RemoveCard(card);
 	}
 
+	int Player::GetHash()
+	{
+		int result;
+		//Todo faire le hash pour le player
+
+	}
+
 	Player::Player()
 	{
 		playerDeck = new Deck(20);
