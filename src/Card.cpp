@@ -19,17 +19,19 @@ namespace JojoBen
 	Card * Card::MakeCard()
 	{
 		int valuePoints = 10;
-		return nullptr;
+		int attack = rand()%valuePoints;
+		return new Card(attack, valuePoints - attack);
 	}
 
 	Card * Card::MakeCard(int attack, int defence)
 	{
-		return nullptr;
+		return new Card(attack, defence);
 	}
 
 	Card * Card::MakeCard(int valuePoints)
 	{
-		return nullptr;
+		int attack = rand() % valuePoints;
+		return new Card(attack, valuePoints - attack);
 	}
 
 	Card::~Card()

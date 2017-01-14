@@ -18,13 +18,21 @@ namespace JojoBen
 	Deck::Deck()
 	{
 		cards = std::vector<Card*>(deckSize);
+		for (int i = 0; i < deckSize; i++)
+		{
+			cards.at(i) = (Card::MakeCard());
+		}
 	}
 
 
 	Deck::Deck(int size)
 	{
 		deckSize = size;
-		cards = std::vector<Card*>(deckSize);
+		cards = std::vector<Card*>(deckSize); 
+		for (int i = 0; i < deckSize; i++)
+		{
+			cards.at(i) = (Card::MakeCard());
+		}
 	}
 
 	int Deck::GetHash()

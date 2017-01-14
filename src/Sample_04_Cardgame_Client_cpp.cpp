@@ -127,7 +127,6 @@ int main(int argc, char *argv[])
 
 	// Initialization
 	int seed = 123456789;
-	currentGame->Initialize(seed);
 	int n;
 	while (running)
 	{

@@ -31,7 +31,7 @@ namespace JojoBen
 
 	Player::Player()
 	{
-		playerDeck = new Deck(20);
+		playerDeck = new Deck();
 		playerHand = new Hand();
 	}
 
