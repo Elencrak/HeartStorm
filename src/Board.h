@@ -25,8 +25,9 @@ namespace JojoBen
 
 		//Getter
 		vector<Card*> GetPlayedCard();
+
+		void AttackCard(int target);
 	private:
 		vector<Card*> PlayedCard;
 	};
 }
-

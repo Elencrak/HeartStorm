@@ -13,6 +13,7 @@ namespace JojoBen
 		int attack;
 		int defence;
 
+		void TakeDamage(int value);
 		~Card();
 	private:
 		Card(int atk, int def);

@@ -22,12 +22,18 @@ namespace JojoBen {
 			currentPlayerBoard = make_shared<Board>();
 			
 			shared_ptr<Player> currentPlayer;
-			currentPlayer = make_shared<Player>();
+			currentPlayer = make_shared<Player>(i);
 			currentPlayer->Initialize(currentPlayerBoard, Seed);
 
 			PlayersBoard.push_back(currentPlayerBoard);
 			Players.push_back(currentPlayer);
 		}
+	}
+
+	void Game::EndTurn()
+	{
+		playerTurn++;
+		playerTurn = playerTurn%NumberPlayer;
 	}
 
 	int Game::GetGameHash()
@@ -44,6 +50,26 @@ namespace JojoBen {
 			result = 31 * result + PlayersBoard[i]->GetHash();
 		}
 		return result;
+	}
+
+	shared_ptr<Player> Game::GetPlayer(int ID)
+	{
+		return Players[ID];
+	}
+
+	void Game::playCard(int sourcePlayer, int sourceCard, int targetPlayer, int targetCard)
+	{
+		shared_ptr<Player> sourceP = GetPlayer(sourcePlayer);
+		shared_ptr<Player> targetP = GetPlayer(targetPlayer);
+		
+		shared_ptr<Board> sourceBoard = sourceP->GetBoard();
+		shared_ptr<Board> targetBoard = targetP->GetBoard();
+
+		// Attack target
+		targetBoard->GetPlayedCard()[targetCard]->TakeDamage(sourceBoard->GetPlayedCard()[sourceCard]->attack);
+
+		// Contre attack
+		sourceBoard->GetPlayedCard()[sourceCard]->TakeDamage(targetBoard->GetPlayedCard()[targetCard]->attack);
 	}
 
 	/*int Game::GetPlayerHash()

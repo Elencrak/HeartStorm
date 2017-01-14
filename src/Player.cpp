@@ -15,10 +15,21 @@ namespace JojoBen
 			playerHand->AddCard(playerDeck->Draw());
 	}
 
-	void Player::PlayCard(Card * card)
+	void Player::PlayCard(int index)
 	{
-		playerBoard->PlayCard(card);
-		playerHand->RemoveCard(card);
+		if (index > playerHand->Count())
+			std::cout << "There is no " << index << "th card" << std::endl;
+		else
+		{
+			Card* card = playerHand->GetCard(index);
+			playerBoard->PlayCard(card);
+			playerHand->RemoveCard(card);
+		}
+	}
+
+	std::shared_ptr<JojoBen::Board> Player::GetBoard()
+	{
+		return playerBoard;
 	}
 
 	int Player::GetHash()
@@ -29,8 +40,9 @@ namespace JojoBen
 
 	}
 
-	Player::Player()
+	Player::Player(int _ID)
 	{
+		ID = _ID;
 		playerDeck = new Deck();
 		playerHand = new Hand();
 	}

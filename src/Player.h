@@ -12,15 +12,19 @@ namespace JojoBen
 	{
 	public:
 
+		int ID;
+
 		void Initialize(std::shared_ptr<Board> board, int seed);
 
 		void Draw();
 
-		void PlayCard(Card* card);
+		void PlayCard(int index);
+
+		shared_ptr<Board> GetBoard();
 
 		int GetHash();
 
-		Player();
+		Player(int ID);
 		~Player();
 
 	private:

@@ -13,16 +13,19 @@ namespace JojoBen {
 	class Game
 	{
 	public:
+		int playerTurn = 0;
 		Game(int numberPlayer);
 		~Game();
 
 		void Initialize(int seed);		
 
-		/*void PlayCard(int CardToPlay, int TargetPlayer);
-		void EndTurn();*/
+		void EndTurn();
 
 		int GetGameHash();
 		int GetBoardsHash();
+		shared_ptr<Player> GetPlayer(int ID);
+
+		void playCard(int sourcePlayer, int sourceCard, int targetPlayer, int targetCard);
 
 	private:
 		int NumberPlayer;

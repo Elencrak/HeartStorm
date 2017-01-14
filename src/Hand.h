@@ -10,6 +10,8 @@ namespace JojoBen
 	public:
 		void AddCard(Card* card);
 		void RemoveCard(Card* card);
+		int Count();
+		Card* GetCard(int index);
 		Hand();
 		~Hand();
 

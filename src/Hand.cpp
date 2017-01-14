@@ -19,6 +19,16 @@ namespace JojoBen
 		}
 	}
 
+	int Hand::Count()
+	{
+		return cards.size();
+	}
+
+	Card* Hand::GetCard(int index)
+	{
+		return cards[index];
+	}
+
 	Hand::Hand()
 	{
 		cards = std::vector<Card*>();

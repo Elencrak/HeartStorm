@@ -8,6 +8,7 @@
 #include "Online/TurnByTurnPlugin.h"
 #include "Online/GameSession.h"
 #include "Game.h"
+#include "Card.h"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>
 
@@ -21,11 +22,28 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 	}
 	else if (t.cmd == "PlayCard")
 	{
-		//currentGame->PlayCard(t.json_args()[L"CardID"].as_integer(), t.json_args()[L"TargetPlayer"].as_integer());
+		int playerId = currentGame->playerTurn;
+		int cardIndex = t.json_args()[L"Choice"].as_integer();
+		currentGame->GetPlayer(playerId).get()->PlayCard(cardIndex);
+
 	}
+	else if (t.cmd == "Pick")
+	{
+		int playerId = currentGame->playerTurn;
+		currentGame->GetPlayer(playerId).get()->Draw();
+	}
+	else if (t.cmd == "AttackCard")
+	{
+		int playerId = currentGame->playerTurn;
+		int cardIndex = t.json_args()[L"Choice"].as_integer();
+		int targetCardIndex = t.json_args()[L"Target"].as_integer();
+		int targetPlayer = t.json_args()[L"TargetPlayer"].as_integer();
+		currentGame->playCard(playerId, cardIndex, targetPlayer, targetCardIndex);
+	}
+
 	else if (t.cmd == "EndTurn")
 	{
-		//currentGame->EndTurn();
+		currentGame->EndTurn();
 	}
 	// A la fin il faut générer le hash pour le status du jeu
 	return currentGame->GetGameHash();
