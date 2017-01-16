@@ -55,6 +55,11 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 	int result = rand();
 	std::string login = std::to_string(result);
+
+	// Save the login
+	cout << "Enter login : " << endl;
+	cin >> login;
+
 	if (argc >= 2)
 	{
 		login = std::string(argv[1]);
@@ -146,9 +151,13 @@ int main(int argc, char *argv[])
 	// Initialization
 	int seed = 123456789;
 	int n;
+	for  (int i = 0; i<gameSession->getConnectedPlayers().size(); i++)
+	{
+		currentGame->GetPlayer(i)->SetNetworkID(gameSession->getConnectedPlayers().at(i).PlayerId);
+	}
+
 	while (running)
 	{
-
 		// Il faut que je récupère les input des deux joueurs.
 		// De base je prend le premier je joue la carte 
 		// Je prend ensuite le second 
@@ -161,6 +170,11 @@ int main(int argc, char *argv[])
 		auto json = web::json::value();
 		json[L"CardID"] = n;
 		json[L"TargetPlayer"];
+		// Play Player 1
+		cout << "Player un play" << endl;
+
+
+		// Play Player 2
 		try
 		{
 			auto t = transactionBroker->submitTransaction(auth->userId(), "PlayCard", json);

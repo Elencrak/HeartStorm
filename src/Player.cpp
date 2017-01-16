@@ -27,6 +27,16 @@ namespace JojoBen
 		}
 	}
 
+	void Player::SetNetworkID(std::string _netID)
+	{
+		netID = _netID;
+	}
+
+	std::string Player::GetNetworkID()
+	{
+		return netID;
+	}
+
 	std::shared_ptr<JojoBen::Board> Player::GetBoard()
 	{
 		return playerBoard;

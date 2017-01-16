@@ -34,6 +34,11 @@ namespace JojoBen
 		return new Card(attack, valuePoints - attack);
 	}
 
+	void Card::TakeDamage(int value)
+	{
+
+	}
+
 	Card::~Card()
 	{
 

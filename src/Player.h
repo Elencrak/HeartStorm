@@ -20,6 +20,10 @@ namespace JojoBen
 
 		void PlayCard(int index);
 
+		void SetNetworkID(std::string netID);
+
+		std::string GetNetworkID();
+
 		shared_ptr<Board> GetBoard();
 
 		int GetHash();
@@ -28,6 +32,7 @@ namespace JojoBen
 		~Player();
 
 	private:
+		std::string netID;
 		Deck* playerDeck;
 		Hand* playerHand;
 		std::shared_ptr<Board> playerBoard;
