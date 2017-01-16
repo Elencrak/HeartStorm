@@ -43,6 +43,7 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 
 	else if (t.cmd == "EndTurn")
 	{
+		cout << "end trun" << endl;
 		currentGame->EndTurn();
 	}
 	// A la fin il faut générer le hash pour le status du jeu
@@ -52,6 +53,10 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 
 int main(int argc, char *argv[])
 {
+
+	//test
+	int localPlayer;
+
 	srand(time(NULL));
 	int result = rand();
 	std::string login = std::to_string(result);
@@ -147,24 +152,49 @@ int main(int argc, char *argv[])
 	gameSession->waitServerReady().get();//
 	std::cout << "CONNECTED" << std::endl;
 
-
+	
 	// Initialization
 	int seed = 123456789;
 	int n;
-	for  (int i = 0; i<gameSession->getConnectedPlayers().size(); i++)
+	if (auth->GetUsername() == mmResponse.team1.at(0).pseudo)
 	{
-		currentGame->GetPlayer(i)->SetNetworkID(gameSession->getConnectedPlayers().at(i).PlayerId);
+		localPlayer = 0;
 	}
+	else
+	{
+		localPlayer = 1;
+	}
+	cout << auth->userId() << endl;
 
 	while (running)
 	{
-		// Il faut que je récupère les input des deux joueurs.
+
+		if (currentGame->playerTurn == localPlayer)
+		{
+			cout << "play card" << endl;
+			std::cin >> n;
+			auto json = web::json::value();
+			json[L"CardID"] = n;
+			try
+			{
+				auto t = transactionBroker->submitTransaction(auth->userId(), "EndTurn", json);
+				t.get();
+			}
+			catch (std::exception& ex)
+			{
+				cout << "toto";
+				std::cout << ex.what();
+			}
+		}
+
+		/*// Il faut que je récupère les input des deux joueurs.
 		// De base je prend le premier je joue la carte 
 		// Je prend ensuite le second 
 		// je joue la carte 
 		// je finis le tour.
 		// Optionnel rajouter les board des deux joueurs
 
+		std::cout << "Player turn : "<< localPlayer << std::endl;
 		std::cout << "Enter number to add to game state." << std::endl;
 		std::cin >> n;
 		auto json = web::json::value();
@@ -174,16 +204,8 @@ int main(int argc, char *argv[])
 		cout << "Player un play" << endl;
 
 
-		// Play Player 2
-		try
-		{
-			auto t = transactionBroker->submitTransaction(auth->userId(), "PlayCard", json);
-			t.get();
-		}
-		catch(std::exception& ex)
-		{
-			std::cout << ex.what();
-		}
+		// Play Player 2*/
+		
 	}
 
 	std::cout << "disconnecting...";
