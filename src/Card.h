@@ -13,6 +13,7 @@ namespace JojoBen
 		static Card* MakeCard(int attack, int defence);
 		static Card* MakeCard(int valuePoints);
 
+		std::string ToString();
 		void TakeDamage(int value);
 		bool IsDead();
 

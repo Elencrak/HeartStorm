@@ -19,6 +19,18 @@ namespace JojoBen
 		}
 	}
 
+	std::string Hand::ToString()
+	{
+		std::string ret = "---------------------HAND---------------------";
+		for each (Card* c in cards)
+		{
+			ret += c->ToString();
+			ret += "\n";
+		}
+		ret += "\n";
+		return ret;
+	}
+
 	int Hand::Count()
 	{
 		return cards.size();

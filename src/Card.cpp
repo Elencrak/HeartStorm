@@ -34,6 +34,11 @@ namespace JojoBen
 		return new Card(attack, valuePoints - attack);
 	}
 
+	std::string Card::ToString()
+	{
+		return "Attack : "+attack+" defence : "+defence;
+	}
+
 	void Card::TakeDamage(int value)
 	{
 		if (attack - value <= 0)

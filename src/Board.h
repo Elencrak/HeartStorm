@@ -23,6 +23,8 @@ namespace JojoBen
 		
 		int GetHash();
 
+		std::string ToString();
+
 		//Getter
 		vector<Card*> GetPlayedCard();
 

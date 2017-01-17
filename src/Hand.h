@@ -14,7 +14,7 @@ namespace JojoBen
 		Card* GetCard(int index);
 		Hand();
 		~Hand();
-
+		std::string ToString();
 		int GetHash();
 
 	private:
