@@ -35,7 +35,7 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 	else if (t.cmd == "AttackCard")
 	{
 		int playerId = currentGame->playerTurn;
-		int cardIndex = t.json_args()[L"Choice"].as_integer();
+		int cardIndex = t.json_args()[L"CardID"].as_integer();
 		int targetCardIndex = t.json_args()[L"Target"].as_integer();
 		int targetPlayer = t.json_args()[L"TargetPlayer"].as_integer();
 		currentGame->playCard(playerId, cardIndex, targetPlayer, targetCardIndex);
@@ -43,8 +43,7 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 
 	else if (t.cmd == "EndTurn")
 	{
-		cout << "end trun" << endl;
-		currentGame->EndTurn();
+		currentGame->EndTurn();		
 	}
 	// A la fin il faut générer le hash pour le status du jeu
 	return currentGame->GetGameHash();
@@ -120,7 +119,7 @@ int main(int argc, char *argv[])
 	{
 
 		auto newHash = ApplyTransaction(update, currentGame);
-		std::cout << "game state updated : " << currentGame << std::endl;
+		//std::cout << "game state updated : " << currentGame << std::endl;
 		return newHash; //Returns the new hash to the server for validation
 	});
 	transactionBroker->onReplayTLog([&currentGame,&running](std::vector<Stormancer::TransactionLogItem> transactions)
@@ -142,7 +141,6 @@ int main(int argc, char *argv[])
 
 	});
 
-
 	std::cout << "Connecting to game...";
 	auto gameSession = game_scene.lock()->dependencyResolver()->resolve<Stormancer::GameSessionService>();
 
@@ -156,6 +154,7 @@ int main(int argc, char *argv[])
 	// Initialization
 	int seed = 123456789;
 	int n;
+
 	if (auth->GetUsername() == mmResponse.team1.at(0).pseudo)
 	{
 		localPlayer = 0;
@@ -164,48 +163,67 @@ int main(int argc, char *argv[])
 	{
 		localPlayer = 1;
 	}
+
 	cout << auth->userId() << endl;
 
 	while (running)
-	{
-
+	{		
 		if (currentGame->playerTurn == localPlayer)
 		{
-			cout << "play card" << endl;
-			std::cin >> n;
+			//Pick card
 			auto json = web::json::value();
-			json[L"CardID"] = n;
+			json[L"PlayerId"] = currentGame->playerTurn;
 			try
 			{
-				auto t = transactionBroker->submitTransaction(auth->userId(), "EndTurn", json);
+				auto t = transactionBroker->submitTransaction(auth->userId(), "Pick", json);
 				t.get();
 			}
 			catch (std::exception& ex)
 			{
-				cout << "toto";
 				std::cout << ex.what();
 			}
-		}
+			// Display hand
 
-		/*// Il faut que je récupère les input des deux joueurs.
-		// De base je prend le premier je joue la carte 
-		// Je prend ensuite le second 
-		// je joue la carte 
-		// je finis le tour.
-		// Optionnel rajouter les board des deux joueurs
+			currentGame->GetPlayer(currentGame->playerTurn).get()
 
-		std::cout << "Player turn : "<< localPlayer << std::endl;
-		std::cout << "Enter number to add to game state." << std::endl;
-		std::cin >> n;
-		auto json = web::json::value();
-		json[L"CardID"] = n;
-		json[L"TargetPlayer"];
-		// Play Player 1
-		cout << "Player un play" << endl;
-
-
-		// Play Player 2*/
-		
+			// Play card
+			int cardID;
+			int target;
+			int cardToAttack;
+			cout << "------------------- Play card -------------------" << endl;
+			cin >> cardID;
+			cout << "------------------- Select Player -------------------" << endl;
+			cin >> cardToAttack;
+			cout << "------------------- Select Card to attack -------------------" << endl;
+			cin >> target;
+			if (cardID != 0 && target != 0)
+			{
+				auto json = web::json::value();
+				json[L"CardID"] = cardID;
+				json[L"Target"] = target;
+				json[L"TargetPlayer"] = cardToAttack;
+				try
+				{
+					auto t = transactionBroker->submitTransaction(auth->userId(), "AttackCard", json);
+					t.get();
+				}
+				catch (std::exception& ex)
+				{
+					std::cout << ex.what();
+				}
+				
+				try
+				{
+					auto t = transactionBroker->submitTransaction(auth->userId(), "EndTurn", json);
+					t.get();
+					cout << "------------------- Wait for other player -------------------" << endl;
+				}
+				catch (std::exception& ex)
+				{				
+					std::cout << ex.what();
+				}
+			}
+		}			
 	}
 
 	std::cout << "disconnecting...";

@@ -36,7 +36,25 @@ namespace JojoBen
 
 	void Card::TakeDamage(int value)
 	{
+		if (attack - value <= 0)
+		{	
+			std::cout << "Card " << CardId << " is Dead" << std::endl;
+			defence = 0;
+		}
+		else
+		{
+			defence - value;
+			std::cout << "------ Card " << CardId << " have " << defence << "life point -----" << std::endl;
+		}
+	}
 
+	bool Card::IsDead()
+	{
+		if (defence <= 0)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	Card::~Card()

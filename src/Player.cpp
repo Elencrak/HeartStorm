@@ -3,6 +3,25 @@
 
 namespace JojoBen
 {
+
+	Player::Player(int _ID)
+	{
+		ID = _ID;
+		playerDeck = new Deck();
+		playerHand = new Hand();
+
+		for (int i = 0; i < 7; i++) 
+		{
+			this->Draw();
+		}
+	}
+
+	Player::~Player()
+	{
+		delete playerDeck;
+		delete playerHand;
+	}
+
 	void Player::Initialize(std::shared_ptr<Board> board, int seed)
 	{
 		srand(seed);
@@ -48,19 +67,5 @@ namespace JojoBen
 		//Todo faire le hash pour le player
 		return 0;
 
-	}
-
-	Player::Player(int _ID)
-	{
-		ID = _ID;
-		playerDeck = new Deck();
-		playerHand = new Hand();
-	}
-
-
-	Player::~Player()
-	{
-		delete playerDeck;
-		delete playerHand;
 	}
 }

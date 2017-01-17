@@ -3,6 +3,25 @@
 
 namespace JojoBen
 {
+	Deck::Deck()
+	{
+		cards = std::vector<Card*>(deckSize);
+		for (int i = 0; i < deckSize; i++)
+		{
+			cards.at(i) = (Card::MakeCard());
+		}
+	}
+
+	Deck::Deck(int size)
+	{
+		deckSize = size;
+		cards = std::vector<Card*>(deckSize);
+		for (int i = 0; i < deckSize; i++)
+		{
+			cards.at(i) = (Card::MakeCard());
+		}
+	}
+
 	Card * Deck::Draw()
 	{
 		Card* ret = cards.back();
@@ -15,25 +34,6 @@ namespace JojoBen
 		return cards.empty();
 	}
 
-	Deck::Deck()
-	{
-		cards = std::vector<Card*>(deckSize);
-		for (int i = 0; i < deckSize; i++)
-		{
-			cards.at(i) = (Card::MakeCard());
-		}
-	}
-
-
-	Deck::Deck(int size)
-	{
-		deckSize = size;
-		cards = std::vector<Card*>(deckSize); 
-		for (int i = 0; i < deckSize; i++)
-		{
-			cards.at(i) = (Card::MakeCard());
-		}
-	}
 
 	int Deck::GetHash()
 	{
