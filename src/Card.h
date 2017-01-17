@@ -13,6 +13,7 @@ namespace JojoBen
 		int attack;
 		int defence;
 
+		std::string ToString();
 		void TakeDamage(int value);
 		~Card();
 	private:

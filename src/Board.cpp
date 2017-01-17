@@ -34,6 +34,18 @@ namespace JojoBen
 		return result;
 	}
 
+	std::string Board::ToString()
+	{
+		std::string ret = "---------------------BOARD---------------------";
+		for each (Card* c in PlayedCard)
+		{
+			ret += c->ToString();
+			ret += "\n";
+		}
+		ret += "\n";
+		return ret;
+	}
+
 	std::vector<Card*> Board::GetPlayedCard()
 	{
 		return PlayedCard;
