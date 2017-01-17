@@ -20,6 +20,11 @@ namespace JojoBen
 		//void ChooseAttackers();
 
 		//void ChooseDefend();
+
+		void EraseCard(int cardIndex);
+		void ExhaustCard(int cardIndex);
+		int FreeNumber();
+		void RestoreCards();
 		
 		int GetHash();
 

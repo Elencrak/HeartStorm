@@ -40,6 +40,8 @@ namespace JojoBen
 		ret += std::to_string(attack);
 		ret += " defence: ";
 		ret += std::to_string(defence);
+		ret += " exhausted : ";
+		ret += std::to_string(exhausted);
 		return ret;
 	}
 

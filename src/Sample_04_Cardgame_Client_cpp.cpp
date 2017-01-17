@@ -39,17 +39,16 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 		int targetPlayer = t.json_args()[L"TargetPlayer"].as_integer();
 		int targetCardIndex = t.json_args()[L"TargetCardIndex"].as_integer();
 		currentGame->AttackCard(playerId, cardIndex, targetPlayer, targetCardIndex);
-		std::vector<JojoBen::Card*> playedCardTarget = currentGame->GetPlayer(targetPlayer)->GetBoard()->GetPlayedCard();
-		if (playedCardTarget[targetCardIndex]->IsDead())
+		auto playedCardTarget = currentGame->GetPlayer(targetPlayer)->GetBoard();
+		currentGame->GetPlayer(playerId)->GetBoard().get()->ExhaustCard(cardIndex);
+		if (playedCardTarget->GetPlayedCard()[targetCardIndex]->IsDead())
 		{
-			cout << "ERASE Card on OTHER" << endl;
-			playedCardTarget.erase(playedCardTarget.begin() + targetCardIndex);
+			playedCardTarget->EraseCard(targetCardIndex);
 		}
-		std::vector<JojoBen::Card*> playedCardPlayer = currentGame->GetPlayer(playerId)->GetBoard()->GetPlayedCard();
-		if (playedCardPlayer[cardIndex]->IsDead())
+		auto playedCardPlayer = currentGame->GetPlayer(playerId)->GetBoard();
+		if (playedCardPlayer->GetPlayedCard()[cardIndex]->IsDead())
 		{
-			cout << "ERASE Card on THIS" << endl;
-			playedCardPlayer.erase(playedCardPlayer.begin() + cardIndex);
+			playedCardPlayer->EraseCard(cardIndex);
 		}
 	}
 	else if (t.cmd == "AttackPlayer")
@@ -59,6 +58,12 @@ int ApplyTransaction(Stormancer::UpdateDto t, shared_ptr<Game> currentGame)
 		int targetPlayer = t.json_args()[L"TargetPlayer"].as_integer();
 		int damage = currentGame->GetPlayer(currentGame->playerTurn).get()->GetBoard().get()->GetPlayedCard()[cardIndex]->attack;
 		currentGame->GetPlayer(targetPlayer)->TakeDamage(damage);
+		currentGame->GetPlayer(currentGame->playerTurn)->GetBoard().get()->ExhaustCard(cardIndex);
+		if (currentGame->GetPlayer(targetPlayer)->LifePoint <= 0)
+		{
+			cout << "Player " << currentGame->playerTurn << " win " << endl;
+			currentGame->running = false;
+		}
 	}
 	else if (t.cmd == "EndTurn")
 	{
@@ -154,10 +159,8 @@ int main(int argc, char *argv[])
 				std::cin >> v;
 				running = false;
 				break;
-
 			}
 		}
-
 	});
 
 	std::cout << "Connecting to game...";
@@ -185,7 +188,9 @@ int main(int argc, char *argv[])
 
 	cout << auth->userId() << endl;
 
-	while (running)
+	currentGame->running = true;
+
+	while (currentGame->running)
 	{		
 		if (currentGame->playerTurn == localPlayer)
 		{
@@ -260,41 +265,28 @@ int main(int argc, char *argv[])
 			cout << "--------------------- Player PV " << currentGame->GetPlayer(otherPlayer).get()->LifePoint << " ---------------------\n" << endl;
 			cout << currentGame->GetPlayer(otherPlayer).get()->GetBoard()->ToString() << endl;
 
+			replayCard:
 			// Attack phase
-			auto jsonAttack = web::json::value();
-			cout << "------------------- Select Card to use -------------------" << endl;
-			cout << "--------------------- My BOARD---------------------\n" << endl;
-			cout << "--------------------- Player PV " << currentGame->GetPlayer(currentGame->playerTurn).get()->LifePoint << " ---------------------\n" << endl;
-			cout << currentGame->GetPlayer(currentGame->playerTurn).get()->GetBoard()->ToString() << endl;
-			cin >> cardID;
-					
-			if (cardID == 666)
+			if (currentGame->GetPlayer(currentGame->playerTurn).get()->GetBoard()->GetPlayedCard().size() != 0 && currentGame->GetPlayer(currentGame->playerTurn).get()->GetBoard()->FreeNumber() != 0)
 			{
-				try
+				auto jsonAttack = web::json::value();
+				cout << "------------------- Select Card to use -------------------" << endl;
+				cout << "--------------------- My BOARD---------------------\n" << endl;
+				cout << "--------------------- Player PV " << currentGame->GetPlayer(currentGame->playerTurn).get()->LifePoint << " ---------------------\n" << endl;
+				cout << currentGame->GetPlayer(currentGame->playerTurn).get()->GetBoard()->ToString() << endl;
+				cin >> cardID;
+				int boardSizePlayer = currentGame->GetPlayer(currentGame->playerTurn).get()->GetBoard()->GetPlayedCard().size();
+				if (cardID <= 0 || cardID > boardSizePlayer)
 				{
-					auto t = transactionBroker->submitTransaction(auth->userId(), "EndTurn", json);
-					t.get();
-					cout << "------------------- Wait for other player -------------------" << endl;
+					cout << "input invalide " << endl;
+					goto replayCard;
 				}
-				catch (std::exception& ex)
+				if (currentGame->GetPlayer(currentGame->playerTurn).get()->GetBoard()->GetPlayedCard().at(cardID - 1)->exhausted)
 				{
-					std::cout << ex.what();
+					cout << "carte épuisee " << endl;
+					goto replayCard;
 				}
-				continue;
-			}
-
-			jsonAttack[L"CardID"] = cardID - 1;
-			jsonAttack[L"TargetPlayer"] = otherPlayer;
-			int cardToAttack = 0;
-			if(currentGame->GetPlayer(otherPlayer).get()->GetBoard()->GetPlayedCard().size() != 0)
-			{				
-				cout << "------------------- Select Card to attack -------------------" << endl;
-				cout << "--------------------- Other BOARD ---------------------\n" << endl;
-				cout << "--------------------- Player PV " << currentGame->GetPlayer(otherPlayer).get()->LifePoint << " ---------------------\n" << endl;
-				cout << currentGame->GetPlayer(otherPlayer).get()->GetBoard()->ToString() << endl;
-				cin >> cardToAttack;			
-
-				if (cardToAttack == 666)
+				if (cardID == 666)
 				{
 					try
 					{
@@ -309,35 +301,68 @@ int main(int argc, char *argv[])
 					continue;
 				}
 
-				jsonAttack[L"TargetCardIndex"] = cardToAttack - 1;
-
-				try
+				jsonAttack[L"CardID"] = cardID - 1;
+				jsonAttack[L"TargetPlayer"] = otherPlayer;
+				int cardToAttack = 0;
+				if (currentGame->GetPlayer(otherPlayer).get()->GetBoard()->GetPlayedCard().size() != 0 && currentGame->GetPlayer(otherPlayer).get()->GetBoard()->FreeNumber() != 0)
 				{
-					auto t = transactionBroker->submitTransaction(auth->userId(), "AttackCard", jsonAttack);
-					t.get();
-				}
-				catch (std::exception& ex)
-				{
-					std::cout << ex.what();
-				}
+					cout << "------------------- Select Card to attack -------------------" << endl;
+					cout << "--------------------- Other BOARD ---------------------\n" << endl;
+					cout << "--------------------- Player PV " << currentGame->GetPlayer(otherPlayer).get()->LifePoint << " ---------------------\n" << endl;
+					cout << currentGame->GetPlayer(otherPlayer).get()->GetBoard()->ToString() << endl;
+					cin >> cardToAttack;
+					cout << endl;
+					int boardSize = currentGame->GetPlayer(otherPlayer).get()->GetBoard()->GetPlayedCard().size();
+					if (cardToAttack <= 0 || cardToAttack > boardSize)
+					{
+						cout << "input invalide " << endl;
+						goto replayCard;
+					}
+					if (cardToAttack == 666)
+					{
+						try
+						{
+							auto t = transactionBroker->submitTransaction(auth->userId(), "EndTurn", json);
+							t.get();
+							cout << "------------------- Wait for other player -------------------" << endl;
+						}
+						catch (std::exception& ex)
+						{
+							std::cout << ex.what();
+						}
+						continue;
+					}
 
+					jsonAttack[L"TargetCardIndex"] = cardToAttack - 1;
+
+					try
+					{
+						auto t = transactionBroker->submitTransaction(auth->userId(), "AttackCard", jsonAttack);
+						t.get();
+					}
+					catch (std::exception& ex)
+					{
+						std::cout << ex.what();
+					}
+
+				}
+				else
+				{
+					try
+					{
+						auto t = transactionBroker->submitTransaction(auth->userId(), "AttackPlayer", jsonAttack);
+						t.get();
+					}
+					catch (std::exception& ex)
+					{
+						std::cout << ex.what();
+					}
+				}
+				goto replayCard;
 			}
-			else
-			{
-				try
-				{
-					auto t = transactionBroker->submitTransaction(auth->userId(), "AttackPlayer", jsonAttack);
-					t.get();
-				}
-				catch (std::exception& ex)
-				{
-					std::cout << ex.what();
-				}
-			}
-
 			try
 			{
-				auto t = transactionBroker->submitTransaction(auth->userId(), "EndTurn", jsonAttack);
+				auto t = transactionBroker->submitTransaction(auth->userId(), "EndTurn", json);
 				t.get();
 				cout << "------------------- Wait for other player -------------------" << endl;
 			}
@@ -351,6 +376,7 @@ int main(int argc, char *argv[])
 	std::cout << "disconnecting...";
 	client->disconnect().get();
 	std::cout << "DONE" << std::endl;
+	system("pause");
 	return 0;
 }
 

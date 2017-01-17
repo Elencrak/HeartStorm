@@ -14,6 +14,7 @@ namespace JojoBen {
 	{
 	public:
 		int playerTurn = 0;
+		bool running;
 		Game(int numberPlayer);
 		~Game();
 

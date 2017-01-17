@@ -23,6 +23,35 @@ namespace JojoBen
 		PlayedCard.push_back(cardToPlay);
 	}
 
+	void Board::EraseCard(int cardIndex)
+	{
+		PlayedCard.erase(PlayedCard.begin() + cardIndex);
+	}
+
+	void Board::ExhaustCard(int cardIndex)
+	{
+		PlayedCard.at(cardIndex)->exhausted = true;
+	}
+
+	int Board::FreeNumber()
+	{
+		int ret = 0;
+		for each (Card* c in PlayedCard)
+		{
+			if (!c->exhausted)
+				ret++;
+		}
+		return ret;
+	}
+
+	void Board::RestoreCards()
+	{
+		for each (Card* c in PlayedCard)
+		{
+			c->exhausted = false;
+		}
+	}
+
 	int Board::GetHash()
 	{
 		int result = 0;

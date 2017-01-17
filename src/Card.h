@@ -8,6 +8,7 @@ namespace JojoBen
 		int CardId;	
 		int attack;
 		int defence;
+		bool exhausted = false;
 
 		static Card* MakeCard();
 		static Card* MakeCard(int attack, int defence);

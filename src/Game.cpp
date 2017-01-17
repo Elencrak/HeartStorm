@@ -34,6 +34,10 @@ namespace JojoBen {
 	{
 		playerTurn++;
 		playerTurn = playerTurn%NumberPlayer;
+		for each (std::shared_ptr<Player> pl in Players)
+		{
+			pl->GetBoard().get()->RestoreCards();
+		}
 	}
 
 	int Game::GetGameHash()
