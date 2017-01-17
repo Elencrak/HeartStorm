@@ -57,7 +57,7 @@ namespace JojoBen {
 		return Players[ID];
 	}
 
-	void Game::playCard(int sourcePlayer, int sourceCard, int targetPlayer, int targetCard)
+	void Game::AttackCard(int sourcePlayer, int sourceCard, int targetPlayer, int targetCard)
 	{
 		shared_ptr<Player> sourceP = GetPlayer(sourcePlayer);
 		shared_ptr<Player> targetP = GetPlayer(targetPlayer);

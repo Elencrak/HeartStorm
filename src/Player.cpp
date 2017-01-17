@@ -25,6 +25,7 @@ namespace JojoBen
 	void Player::Initialize(std::shared_ptr<Board> board, int seed)
 	{
 		srand(seed);
+		LifePoint = 15;
 		playerBoard = board;
 	}
 
@@ -61,6 +62,11 @@ namespace JojoBen
 		return playerBoard;
 	}
 
+	Hand * Player::GetHand()
+	{
+		return playerHand;
+	}
+
 	int Player::GetHash()
 	{
 		int result = 0;
@@ -68,4 +74,10 @@ namespace JojoBen
 		return 0;
 
 	}
+
+	void Player::TakeDamage(int amount)
+	{
+		LifePoint -= amount;
+	}
+
 }

@@ -36,11 +36,14 @@ namespace JojoBen
 
 	std::string Board::ToString()
 	{
-		std::string ret = "---------------------BOARD---------------------";
+		std::string ret = "";
+		int index = 1; 
 		for each (Card* c in PlayedCard)
 		{
+			ret += std::to_string(index);
 			ret += c->ToString();
 			ret += "\n";
+			index++;
 		}
 		ret += "\n";
 		return ret;

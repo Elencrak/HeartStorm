@@ -25,7 +25,7 @@ namespace JojoBen {
 		int GetBoardsHash();
 		shared_ptr<Player> GetPlayer(int ID);
 
-		void playCard(int sourcePlayer, int sourceCard, int targetPlayer, int targetCard);
+		void AttackCard(int sourcePlayer, int sourceCard, int targetPlayer, int targetCard);
 
 	private:
 		int NumberPlayer;

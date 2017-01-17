@@ -21,11 +21,14 @@ namespace JojoBen
 
 	std::string Hand::ToString()
 	{
-		std::string ret = "---------------------HAND---------------------";
+		std::string ret = "---------------------HAND---------------------\n";
+		int index = 1;
 		for each (Card* c in cards)
 		{
+			ret += std::to_string(index) + " : ";
 			ret += c->ToString();
 			ret += "\n";
+			index++;
 		}
 		ret += "\n";
 		return ret;

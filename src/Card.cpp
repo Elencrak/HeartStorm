@@ -36,30 +36,30 @@ namespace JojoBen
 
 	std::string Card::ToString()
 	{
-		return "Attack : "+attack+" defence : "+defence;
+		std::string ret = "Attack : ";
+		ret += std::to_string(attack);
+		ret += " defence: ";
+		ret += std::to_string(defence);
+		return ret;
 	}
 
 	void Card::TakeDamage(int value)
 	{
-		if (attack - value <= 0)
+		if (defence - value <= 0)
 		{	
-			std::cout << "Card " << CardId << " is Dead" << std::endl;
-			defence = 0;
+			std::cout << "Card " << std::to_string(CardId) << " is Dead" << std::endl;
+			defence = 0;			
 		}
 		else
 		{
-			defence - value;
-			std::cout << "------ Card " << CardId << " have " << defence << "life point -----" << std::endl;
+			defence -= value;
+			std::cout << "------ Card " << std::to_string(CardId) << " have " << std::to_string(defence) << "life point -----" << std::endl;
 		}
 	}
 
 	bool Card::IsDead()
 	{
-		if (defence <= 0)
-		{
-			return true;
-		}
-		return false;
+		return defence <= 0;	
 	}
 
 	Card::~Card()

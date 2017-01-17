@@ -13,6 +13,7 @@ namespace JojoBen
 	public:
 
 		int ID;
+		int LifePoint;
 
 		void Initialize(std::shared_ptr<Board> board, int seed);
 
@@ -26,7 +27,11 @@ namespace JojoBen
 
 		shared_ptr<Board> GetBoard();
 
+		Hand* GetHand();
+
 		int GetHash();
+
+		void TakeDamage(int amount);
 
 		Player(int ID);
 		~Player();
